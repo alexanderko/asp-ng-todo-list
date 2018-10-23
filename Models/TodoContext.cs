@@ -11,9 +11,9 @@ namespace TodoSpa.Models {
             modelBuilder
                 .Entity<Task>()
                 .HasData(
-                    new Task { Id = 1001, Title = "Register on Meetup" },
-                    new Task { Id = 1002, Title = "Get amazed by ASP.NET Core" },
-                    new Task { Id = 1003, Title = "Apply to InterLink inCamp" }
+                    new Task { Id = 1, Title = "Register on Meetup", IsDone = true },
+                    new Task { Id = 2, Title = "Get amazed by ASP.NET Core" },
+                    new Task { Id = 3, Title = "Apply to InterLink inCamp" }
                 );
         }
     }
