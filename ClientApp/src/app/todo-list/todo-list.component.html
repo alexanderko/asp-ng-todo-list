@@ -5,3 +5,8 @@
     {{task.title}}
   </li>
 </ul>
+
+<form (ngSubmit)="addTask()">
+  <input type="text" [(ngModel)]="newTask.title" name="title">
+  <button type="submit">Add new task</button>
+</form>
