@@ -22,6 +22,10 @@ namespace TodoSpa.Controllers {
 
         [HttpPost]
         public IActionResult Post([FromBody] Task task) {
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+
             _context.Tasks.Add(task);
             _context.SaveChanges();
             return Created("api/tasks", task);
