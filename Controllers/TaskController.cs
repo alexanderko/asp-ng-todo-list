@@ -20,6 +20,27 @@ namespace TodoSpa.Controllers {
             return _context.Tasks.ToList();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(long id, [FromBody] Task req) {
+            Task task = _context.Tasks.Find(id);
+
+            if (task == null) {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+
+            task.IsDone = req.IsDone;
+            task.Title = req.Title;
+            _context.Update(task);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+
         [HttpPost]
         public IActionResult Post([FromBody] Task task) {
             if (!ModelState.IsValid) {

@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'todo-list',
-  templateUrl: 'todo-list.component.html'
+  templateUrl: 'todo-list.component.html',
+  styleUrls: ['todo-list.component.css']
 })
 
 export class TodoListComponent implements OnInit {
@@ -24,6 +25,13 @@ export class TodoListComponent implements OnInit {
       .subscribe(this.taskAdded);
   }
 
+  toggleTask(task: Task) {
+    task.isDone = !task.isDone;
+    this.http
+      .put(`api/tasks/${task.id}`, task)
+      .subscribe()
+  }
+
   private taskAdded = (task: Task) => {
     this.tasks.push(task);
     this.newTask.title = '';
@@ -31,6 +39,7 @@ export class TodoListComponent implements OnInit {
 }
 
 interface Task {
+  id?: number;
   title: string;
   isDone?: boolean;
 }
