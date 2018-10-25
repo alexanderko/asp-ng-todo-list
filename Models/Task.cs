@@ -11,5 +11,8 @@ namespace TodoSpa.Models
         public string Title { get; set; }
 
         public bool IsDone { get; set; }
+
+        [Required]
+        public int TodoListId { get; set; }
     }
 }
