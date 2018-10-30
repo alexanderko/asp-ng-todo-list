@@ -16,8 +16,14 @@ namespace TodoSpa.Controllers {
         }
 
         [HttpGet]
-        public ICollection<Task> Get() {
-            return _context.Tasks.ToList();
+        public ICollection<Task> Get(int? listId) {
+            IQueryable<Task> taskQuery = _context.Tasks;
+
+            if (listId.HasValue)
+                taskQuery = taskQuery.Where(t => t.TodoListId == listId);
+
+            return taskQuery
+                .ToList();
         }
 
         [HttpPut("{id}")]
