@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TodoList } from '../todo-list.model';
 
 @Component({
   selector: 'todo-list',
@@ -7,21 +8,27 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['todo-list.component.css']
 })
 
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnChanges {
   public tasks: Task[];
   public newTask: Task = { title: '' };
 
+  @Input() public list: TodoList;
+
   constructor(private http: HttpClient) { }
 
-  ngOnInit() {
-    this.http
-      .get<Task[]>('api/tasks')
-      .subscribe(tasks => this.tasks = tasks);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.list) {
+      this.getTasks();
+    }
   }
 
   addTask() {
-    this.http
-      .post<Task>('api/tasks', this.newTask)
+    let listTask: Task = {
+      ...this.newTask,
+      todoListId: this.list.id
+    };
+
+    this.http.post<Task>('api/tasks', listTask)
       .subscribe(this.taskAdded);
   }
 
@@ -30,6 +37,13 @@ export class TodoListComponent implements OnInit {
     this.http
       .put(`api/tasks/${task.id}`, task)
       .subscribe()
+  }
+
+  private getTasks() {
+    let params = { listId: '' + this.list.id };
+
+    this.http.get<Task[]>('api/tasks', { params })
+      .subscribe(tasks => this.tasks = tasks);
   }
 
   private taskAdded = (task: Task) => {
@@ -42,4 +56,5 @@ interface Task {
   id?: number;
   title: string;
   isDone?: boolean;
+  todoListId?: number;
 }

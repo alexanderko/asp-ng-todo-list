@@ -1,0 +1,23 @@
+<div>
+  <h1>Lists</h1>
+  <ul>
+    <li
+      *ngFor="let list of todoLists"
+      (click)="selectList(list)"
+      [class.selected]="list === selectedList"
+    >
+      {{list.title}}
+    </li>
+  </ul>
+
+
+  <form (ngSubmit)="addList()">
+    <input type="text" [(ngModel)]="newList.title" name="title">
+    <button type="submit">Add new list</button>
+  </form>
+
+  <todo-list
+    *ngIf="selectedList"
+    [list]="selectedList"
+  ></todo-list>
+</div>
